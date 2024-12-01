@@ -9,6 +9,8 @@ The `LEDEffects` library provides a simple way to control various LED effects on
 - Color wheel effect
 - Easy to use API
 - Runs effects in the background using FreeRTOS tasks
+- Supports specifying interval or cycle count for effects
+- Automatically stops the effect after completing the specified number of cycles
 
 ## Installation
 
@@ -92,8 +94,22 @@ void setup() {
   strip.show();
   strip.setBrightness(LED_BRIGHTNESS);
 
-  // Set and start the blink effect
-  ledEffects.set(LEDEffects::BLINK, strip.Color(255, 0, 0), 500); // Red color, 500ms interval
+  // Set and start the blink effect with a cycle count
+  ledEffects.set(LEDEffects::BLINK, strip.Color(255, 0, 0), 500, 10); // Red color, 500ms interval, 10 cycles
+  ledEffects.start();
+
+  // Wait for 5 seconds
+  delay(5000);
+
+  // Set and start the breath effect indefinitely
+  ledEffects.set(LEDEffects::BREATH, strip.Color(0, 255, 0), 2000); // Green color, 2000ms interval
+  ledEffects.start();
+
+  // Wait for 5 seconds
+  delay(5000);
+
+  // Set and start the color wheel effect with a cycle count
+  ledEffects.set(LEDEffects::COLOR_WHEEL, 0, 3000, 5); // Color wheel, 3000ms interval, 5 cycles
   ledEffects.start();
 }
 
@@ -121,12 +137,13 @@ LEDEffects(Adafruit_NeoPixel& strip, uint16_t pos);
 #### `set`
 
 ```cpp
-void set(EffectType effect, uint32_t color, uint16_t interval);
+void set(EffectType effect, uint32_t color, uint16_t interval, uint16_t cycles = 0);
 ```
 
 - `effect`: The type of effect to apply.
 - `color`: The color of the effect.
 - `interval`: The interval for the effect in milliseconds.
+- `cycles`: The number of cycles for the effect (optional, default is 0 for infinite).
 
 #### `start`
 
@@ -134,7 +151,7 @@ void set(EffectType effect, uint32_t color, uint16_t interval);
 void start();
 ```
 
-Start the LED effect.
+Start the LED effect. This will cancel any previously running effect.
 
 #### `stop`
 
@@ -143,3 +160,25 @@ void stop();
 ```
 
 Stop the LED effect.
+
+## License
+
+This library is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
+## Version Changes
+
+### v1.1.0
+
+- Added support for specifying interval or cycle count for effects.
+- Automatically stops the effect after completing the specified number of cycles.
+- Ensured that calling `start` will cancel any previously running effect and start the new one.
+
+### v1.0.0
+
+- Initial release of the `LEDEffects` library.
+- Features
+  - Blink effect
+  - Breath effect
+  - Color wheel effect
+  - Easy to use API
+  - Runs effects in the background using FreeRTOS tasks

@@ -33,8 +33,9 @@ public:
    * @param effect The type of effect to apply.
    * @param color The color of the effect.
    * @param interval The interval for the effect in milliseconds.
+   * @param cycles The number of cycles for the effect (optional, default is 0 for infinite).
    */
-  void set(EffectType effect, uint32_t color, uint16_t interval);
+  void set(EffectType effect, uint32_t color, uint16_t interval, uint16_t cycles = 0);
 
   /**
    * @brief Start the LED effect.
@@ -70,6 +71,8 @@ private:
   EffectType currentEffect;       ///< The current effect type
   uint32_t effectColor;           ///< The color of the effect
   uint16_t effectInterval;        ///< The interval for the effect in milliseconds
+  uint16_t effectCycles;          ///< The number of cycles for the effect
+  uint16_t currentCycle;          ///< The current cycle count
   bool effectRunning;             ///< Flag indicating if the effect is running
   uint32_t lastUpdate;            ///< The last update time for the effect
   float breathPhase;              ///< The phase for the breath effect
